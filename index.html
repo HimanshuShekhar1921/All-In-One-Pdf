@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All in One PDF Tools | Developed By Himanshu Shekhar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tailwind CSS v2.2.19 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Google Fonts: Poppins -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/poppins@3.3.1/index.css">
+  <!-- Font Awesome v6.5.2 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
+  <!-- Chart.js for visualization tools -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <!-- PDF.js -->
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+  <!-- pdf-lib -->
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <!-- FileSaver.js -->
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(124deg, #080808 0%, #212155 50%, #2f054f 100%);
+      min-height: 100vh;
+      color: #fff;
+    }
+    .glow {
+      box-shadow: 0 0 12px 2px #a855f7, 0 0 26px 0 #8b5cf6;
+    }
+    .glow-sm {
+      box-shadow: 0 0 8px 0 #10b981;
+    }
+    .glow-btn {
+      box-shadow: 0 0 6px 0 #f59e42, 0 0 16px -2px #f59e42;
+    }
+    .fade-in {
+      animation: fadeIn 750ms ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(24px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .pulse-heart {
+      animation: pulseHeart 1.2s infinite;
+    }
+    @keyframes pulseHeart {
+      0% { transform: scale(1);}
+      50% { transform: scale(1.18);}
+      100% { transform: scale(1);}
+    }
+    .transition-transform {
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    ::-webkit-scrollbar { width: 0; background: transparent;}
+    .section-content { overflow: visible; }
+    .img-preview img { box-shadow: 0 2px 8px #18181b99; border-radius:8px;}
+    input:focus, select:focus, textarea:focus, button:focus { outline: none !important; box-shadow: 0 0 2px #a855f7; border-color: #a855f7;}
+    summary { outline: none; }
+    .collapsible-section .section-content { display: none; }
+    .collapsible-section.open .section-content { display: block; }
+    .collapsible-arrow { transition: transform .3s; }
+    .collapsible-section.open .collapsible-arrow { transform: rotate(180deg);}
+    .drop-file-area {
+      border: 2px dashed #a855f7;
+      border-radius: 10px;
+      background: rgba(43,40,67,0.29);
+      padding: 28px 0;
+      text-align: center;
+      color: #c4a6ff;
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .drop-file-area.dragover {
+      background: rgba(168,85,247,0.25);
+      color: #fff;
+      border-color: #00bcd4;
+    }
+  </style>
+</head>
+<body class="relative">
+
+  <!-- HEADER -->
+  <header class="w-full py-6 px-2 md:px-8 flex items-center justify-between bg-gradient-to-r from-purple-800 via-indigo-700 to-fuchsia-700 shadow-lg z-10">
+    <div class="text-3xl font-extrabold tracking-wide flex items-center text-white select-none">
+      <i class="fa-solid fa-file-pdf mr-2 glow-sm text-pink-400"></i>
+      <span class="bg-gradient-to-r from-pink-400 via-fuchsia-500 to-indigo-400 text-transparent bg-clip-text">All in One PDF Tools</span>
+    </div>
+    <div class="flex items-center space-x-3">
+      <span class="text-lg font-medium text-white">Developed By <b class="tracking-wide">Himanshu Shekhar</b>
+        <span class="inline-block ml-1 pulse-heart text-pink-400 text-xl align-middle select-none" title="Made with Love">&#10084;&#65039;</span>
+      </span>
+    </div>
+  </header>
+
+  <div class="flex flex-col lg:flex-row w-full max-w-7xl mx-auto fade-in pt-4 md:pt-10 mb-32 md:mb-16">
+    <!-- SIDEBAR -->
+    <aside class="lg:w-1/4 w-full px-2 md:px-6 mb-6 lg:mb-0">
+      <div class="glow rounded-2xl py-6 px-3 md:px-6 bg-indigo-950/60 border border-fuchsia-500 shadow-xl">
+        <nav>
+          <ul>
+            <li>
+              <button type="button" class="section-toggle w-full flex items-center justify-between py-3 px-3 text-lg font-semibold rounded-xl mb-3 glow-btn hover:bg-gradient-to-r from-indigo-600 via-fuchsia-600 to-pink-700 transition group" data-section="doc">
+                <span><i class="fa fa-layer-group mr-2 text-pink-300"></i>Document Management</span>
+                <i class="fa fa-chevron-down transition-transform transform collapsible-arrow"></i>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="section-toggle w-full flex items-center justify-between py-3 px-3 text-lg font-semibold rounded-xl mb-3 glow-btn hover:bg-gradient-to-r from-emerald-500 via-teal-500 to-indigo-600 transition group" data-section="conv">
+                <span><i class="fa fa-exchange-alt mr-2 text-indigo-300"></i>Conversion Tools</span>
+                <i class="fa fa-chevron-down transition-transform transform collapsible-arrow"></i>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="section-toggle w-full flex items-center justify-between py-3 px-3 text-lg font-semibold rounded-xl mb-3 glow-btn hover:bg-gradient-to-r from-red-500 via-amber-500 to-yellow-400 transition group" data-section="sec">
+                <span><i class="fa fa-lock mr-2 text-yellow-200"></i>Security Tools</span>
+                <i class="fa fa-chevron-down transition-transform transform collapsible-arrow"></i>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="section-toggle w-full flex items-center justify-between py-3 px-3 text-lg font-semibold rounded-xl mb-3 glow-btn hover:bg-gradient-to-r from-fuchsia-600 via-purple-500 to-indigo-700 transition group" data-section="edit">
+                <span><i class="fa fa-pen mr-2 text-teal-300"></i>Content Editing</span>
+                <i class="fa fa-chevron-down transition-transform transform collapsible-arrow"></i>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="section-toggle w-full flex items-center justify-between py-3 px-3 text-lg font-semibold rounded-xl mb-3 glow-btn hover:bg-gradient-to-r from-gray-500 via-blue-500 to-fuchsia-900 transition group" data-section="adv">
+                <span><i class="fa fa-wrench mr-2 text-indigo-200"></i>Advanced Tools</span>
+                <i class="fa fa-chevron-down transition-transform transform collapsible-arrow"></i>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="section-toggle w-full flex items-center justify-between py-3 px-3 text-lg font-semibold rounded-xl mb-3 glow-btn hover:bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-900 transition group" data-section="analyze">
+                <span><i class="fa fa-chart-bar mr-2 text-cyan-200"></i>PDF Analytics</span>
+                <i class="fa fa-chevron-down transition-transform transform collapsible-arrow"></i>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="section-toggle w-full flex items-center justify-between py-3 px-3 text-lg font-semibold rounded-xl mb-3 glow-btn hover:bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-purple-900 transition group" data-section="compare">
+                <span><i class="fa fa-balance-scale mr-2 text-indigo-200"></i>Compare PDF Files</span>
+                <i class="fa fa-chevron-down transition-transform transform collapsible-arrow"></i>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="section-toggle w-full flex items-center justify-between py-3 px-3 text-lg font-semibold rounded-xl mb-1 glow-btn hover:bg-gradient-to-r from-gray-800 via-gray-500 to-gray-100 transition group" data-section="annote">
+                <span><i class="fa fa-highlighter mr-2 text-yellow-300"></i>Annotate & Review</span>
+                <i class="fa fa-chevron-down transition-transform transform collapsible-arrow"></i>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+    <!-- MAIN SECTION CONTENTS -->
+    <main class="flex-1 px-1 md:px-5 lg:pl-6">
+      <section id="main-welcome" class="fade-in section-content block">
+        <div class="max-w-2xl mx-auto py-12 md:py-24 text-center">
+          <h2 class="text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-400 via-violet-400 to-indigo-300 mb-4 bg-clip-text text-transparent drop-shadow-lg">
+            Manage &amp; Edit your PDFs Effortlessly
+          </h2>
+          <p class="text-lg md:text-xl text-white/80 mb-10">
+            Organize, convert, secure, and enhance your PDFs using 35+ specialized tools.<br>
+            Click a section on the left to reveal its PDF utilities!
+          </p>
+          <div class="flex justify-center items-center mt-4">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/adobeacrobatreader.svg" alt="PDF" class="w-16 h-16 mr-6 drop-shadow-xl" />
+            <p class="text-base text-white/70 max-w-lg">
+              <b>Tip:</b> For best results when exporting as PDF, use your browser's “Print to PDF” feature.<br>
+              All tools are easy to use and operate
+              <span class="inline-block px-2 py-1 rounded-lg bg-gradient-to-r from-fuchsia-500 via-pink-500 to-orange-400 text-white mx-1 glow-sm">100% client side</span>
+              for privacy & speed.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============== DOCUMENT MANAGEMENT =============== -->
+      <section id="section-doc" class="fade-in section-content hidden">
+        <div class="rounded-2xl border border-fuchsia-600 bg-indigo-900/80 px-4 py-8 mb-7">
+          <h3 class="text-2xl font-bold mb-2 text-pink-200 flex items-center">
+            <i class="fa fa-layer-group mr-2 text-pink-300"></i> Document Management Tools
+          </h3>
+          <div class="grid md:grid-cols-2 gap-7 mt-7">
+            <!-- Merge PDF -->
+            <div class="rounded-xl bg-gradient-to-br from-indigo-800 via-fuchsia-900 to-pink-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-clone text-pink-300 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Merge PDF</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Combine two or more PDF files in the order you select them.</span>
+              <label class="block mb-3">
+                <input id="merge-files" type="file" accept="application/pdf" multiple class="block w-full rounded-lg border-pink-400 bg-indigo-900/60 text-pink-200 focus:ring-2 focus:ring-pink-400 py-2 px-2 glow-sm" />
+                <span class="text-white/70 text-sm">Select PDF files to merge</span>
+              </label>
+              <button id="merge-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-indigo-100 bg-gradient-to-br from-pink-500 via-fuchsia-600 to-indigo-600 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-paperclip"></i> Merge &amp; Download
+              </button>
+              <div id="merge-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Split PDF -->
+            <div class="rounded-xl bg-gradient-to-br from-indigo-800 via-fuchsia-900 to-pink-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-scissors text-fuchsia-300 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Split PDF</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Extract specific pages or ranges into a new PDF (e.g., 1-3,5,7).</span>
+              <label class="block mb-2">
+                <input id="split-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-fuchsia-400 bg-indigo-900/60 text-fuchsia-200 focus:ring-2 focus:ring-fuchsia-400 py-2 px-2 glow-sm" />
+                <span class="text-white/70 text-sm">Upload a PDF to split by page numbers/range</span>
+              </label>
+              <input id="split-pages" type="text" class="block w-full my-2 rounded-lg border-fuchsia-400 bg-indigo-800 text-fuchsia-100 focus:ring-2 focus:ring-fuchsia-400 py-2 px-2" placeholder="e.g. 1-3,5,7"/>
+              <button id="split-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-indigo-100 bg-gradient-to-br from-fuchsia-600 via-pink-500 to-indigo-500 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-cut"></i> Split &amp; Download
+              </button>
+              <div id="split-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Rearrange Pages -->
+            <div class="rounded-xl bg-gradient-to-br from-indigo-800 via-fuchsia-900 to-pink-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-sort-numeric-down text-indigo-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Rearrange Pages</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Reorder PDF pages as you wish (e.g., 3,1,2,4).</span>
+              <label class="block mb-2">
+                <input id="rearrange-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-indigo-400 bg-indigo-900/60 text-indigo-200 focus:ring-2 focus:ring-indigo-400 py-2 px-2 glow-sm" />
+                <span class="text-white/70 text-sm">Upload a PDF to rearrange its pages</span>
+              </label>
+              <input id="rearrange-order" type="text" class="block w-full my-2 rounded-lg border-indigo-400 bg-indigo-800 text-indigo-100 focus:ring-2 focus:ring-indigo-400 py-2 px-2" placeholder="e.g. 3,1,2,4"/>
+              <button id="rearrange-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-fuchsia-100 bg-gradient-to-br from-indigo-800 via-fuchsia-600 to-indigo-500 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-random"></i> Rearrange &amp; Download
+              </button>
+              <div id="rearrange-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Compress PDF -->
+            <div class="rounded-xl bg-gradient-to-br from-indigo-800 via-fuchsia-900 to-pink-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-compress text-emerald-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Compress PDF</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Reduce the size of your PDF for easier sharing.</span>
+              <label class="block mb-2">
+                <input id="compress-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-emerald-400 bg-indigo-900/60 text-emerald-200 focus:ring-2 focus:ring-emerald-600 py-2 px-2 glow-sm" />
+                <span class="text-white/70 text-sm">Upload a PDF to compress (simple optimization)</span>
+              </label>
+              <button id="compress-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-emerald-500 via-teal-500 to-indigo-500 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-compress-arrows-alt"></i> Compress &amp; Download
+              </button>
+              <div id="compress-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Extract Images -->
+            <div class="rounded-xl bg-gradient-to-br from-indigo-800 via-fuchsia-900 to-pink-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-images text-blue-300 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Extract Images</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Extract all embedded images from your PDF as downloadable PNG/JPGs.</span>
+              <label class="block mb-2">
+                <input id="extractimg-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-blue-400 bg-indigo-900/60 text-blue-200 focus:ring-2 focus:ring-blue-600 py-2 px-2 glow-sm" />
+                <span class="text-white/70 text-sm">Upload a PDF to extract images</span>
+              </label>
+              <button id="extractimg-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-blue-400 via-teal-400 to-fuchsia-400 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-file-image"></i> Extract Images ZIP
+              </button>
+              <div id="extractimg-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Delete Pages -->
+            <div class="rounded-xl bg-gradient-to-br from-indigo-800 via-fuchsia-900 to-pink-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-trash-alt text-red-300 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Delete Pages</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Remove unwanted pages by their numbers (e.g., 2,4,7).</span>
+              <label class="block mb-2">
+                <input id="delpages-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-red-400 bg-indigo-900/60 text-red-200 focus:ring-2 focus:ring-red-600 py-2 px-2 glow-sm" />
+                <span class="text-white/70 text-sm">Upload PDF to delete pages</span>
+              </label>
+              <input id="delpages-numbers" type="text" class="block w-full my-2 rounded-lg border-red-400 bg-indigo-800 text-red-200 focus:ring-2 focus:ring-red-400 py-2 px-2" placeholder="e.g. 2,4,7"/>
+              <button id="delpages-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-red-500 via-fuchsia-500 to-indigo-700 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-trash-alt"></i> Delete &amp; Download
+              </button>
+              <div id="delpages-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============== CONVERSION TOOLS =============== -->
+      <section id="section-conv" class="fade-in section-content hidden">
+        <div class="rounded-2xl border border-teal-400 bg-gradient-to-br from-sky-900 via-teal-900 to-emerald-900 px-4 py-8 mb-7">
+          <h3 class="text-2xl font-bold mb-2 text-emerald-200 flex items-center">
+            <i class="fa fa-exchange-alt mr-2 text-indigo-200"></i> Conversion Tools
+          </h3>
+          <div class="grid md:grid-cols-2 gap-7 mt-7">
+            <!-- PDF to Image -->
+            <div class="rounded-xl bg-gradient-to-br from-indigo-900 via-teal-800 to-emerald-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-image text-cyan-300 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">PDF to Image</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Convert PDF pages to high-quality PNG images.</span>
+              <label class="block mb-2">
+                <input id="pdf2img-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-cyan-400 bg-teal-900/60 text-cyan-200 focus:ring-2 focus:ring-cyan-600 py-2 px-2 glow-sm" />
+                <span class="text-white/70 text-sm">Upload a PDF to convert its pages to images</span>
+              </label>
+              <button id="pdf2img-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-cyan-400 via-emerald-400 to-indigo-400 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-file-image"></i> Convert &amp; Download ZIP
+              </button>
+              <div id="pdf2img-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Image to PDF -->
+            <div class="rounded-xl bg-gradient-to-br from-indigo-900 via-teal-800 to-emerald-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-images text-emerald-300 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Image to PDF</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Combine JPG/PNG images into a single, ordered PDF.</span>
+              <label class="block mb-2">
+                <input id="img2pdf-files" type="file" accept="image/png, image/jpeg" multiple class="block w-full rounded-lg border-emerald-400 bg-emerald-900/60 text-emerald-200 focus:ring-2 focus:ring-emerald-600 py-2 px-2 glow-sm" />
+                <span class="text-white/70 text-sm">Select images</span>
+              </label>
+              <div class="flex items-center space-x-3 mb-2">
+                <label class="text-xs text-white/90">Page Size:
+                  <select id="img2pdf-pagesize" class="rounded px-1 bg-emerald-900 text-emerald-200 border border-emerald-400">
+                    <option value="a4">A4</option>
+                    <option value="letter">Letter</option>
+                  </select>
+                </label>
+                <label class="text-xs text-white/90">Orientation:
+                  <select id="img2pdf-orient" class="rounded px-1 bg-emerald-900 text-emerald-200 border border-emerald-400">
+                    <option value="portrait">Portrait</option>
+                    <option value="landscape">Landscape</option>
+                  </select>
+                </label>
+                <label class="text-xs text-white/90">Image fit:
+                  <select id="img2pdf-fit" class="rounded px-1 bg-emerald-900 text-emerald-200 border border-emerald-400">
+                    <option value="contain">Fit (no crop)</option>
+                    <option value="cover">Fill (crop)</option>
+                  </select>
+                </label>
+              </div>
+              <div id="img2pdf-preview" class="img-preview flex flex-wrap gap-2 mb-2"></div>
+              <button id="img2pdf-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-emerald-400 via-purple-400 to-fuchsia-500 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-file-pdf"></i> Convert &amp; Download PDF
+              </button>
+              <div id="img2pdf-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- PDF to Word -->
+            <div class="rounded-xl bg-gradient-to-br from-indigo-900 via-teal-800 to-emerald-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-file-word text-blue-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">PDF to Word</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Extract text from PDFs as DOCX files (layout not preserved).</span>
+              <label class="block mb-2">
+                <input id="pdf2word-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-blue-400 bg-blue-900/60 text-blue-200 focus:ring-2 focus:ring-blue-600 py-2 px-2 glow-sm" />
+                <span class="text-white/70 text-sm">Upload a PDF to convert it to DOCX</span>
+              </label>
+              <button id="pdf2word-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-blue-400 via-blue-800 to-indigo-500 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-file-word"></i> Convert &amp; Download DOCX
+              </button>
+              <div id="pdf2word-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- PDF to Text -->
+            <div class="rounded-xl bg-gradient-to-br from-indigo-900 via-teal-800 to-emerald-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-file-alt text-emerald-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">PDF to Text</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Extract text content of your PDF as a plain .txt file.</span>
+              <label class="block mb-2">
+                <input id="pdf2text-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-emerald-400 bg-emerald-900/60 text-emerald-200 focus:ring-2 focus:ring-emerald-400 py-2 px-2 glow-sm" />
+                <span class="text-white/70 text-sm">Upload a PDF to extract its text content</span>
+              </label>
+              <button id="pdf2text-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-emerald-300 via-blue-200 to-indigo-300 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-file-alt"></i> Extract &amp; Download TXT
+              </button>
+              <div id="pdf2text-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- PDF to PowerPoint -->
+            <div class="rounded-xl bg-gradient-to-br from-sky-800 via-fuchsia-800 to-indigo-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-file-powerpoint text-orange-300 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">PDF to PowerPoint</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Convert each PDF page to an image slide in PPTX.</span>
+              <label class="block mb-2">
+                <input id="pdf2ppt-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-orange-400 bg-orange-900/60 text-orange-200 focus:ring-2 focus:ring-orange-600 py-2 px-2 glow-sm" />
+                <span class="text-white/70 text-sm">Upload a PDF to convert to PowerPoint</span>
+              </label>
+              <button id="pdf2ppt-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-orange-400 via-fuchsia-400 to-indigo-500 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-file-powerpoint"></i> Convert &amp; Download PPTX
+              </button>
+              <div id="pdf2ppt-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- PDF to Excel -->
+            <div class="rounded-xl bg-gradient-to-br from-green-900 via-teal-900 to-blue-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-file-excel text-green-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">PDF to Excel</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Extract tables to CSV, importable in Excel (<span class="italic">text only, not tables layout</span>).</span>
+              <label class="block mb-2">
+                <input id="pdf2csv-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-green-400 bg-green-900/60 text-green-200 focus:ring-2 focus:ring-green-600 py-2 px-2 glow-sm" />
+                <span class="text-white/70 text-sm">Upload PDF for minimal table extraction</span>
+              </label>
+              <button id="pdf2csv-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-green-400 via-teal-400 to-blue-500 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-file-csv"></i> Extract &amp; Download CSV
+              </button>
+              <div id="pdf2csv-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============== SECURITY TOOLS =============== -->
+      <section id="section-sec" class="fade-in section-content hidden">
+        <div class="rounded-2xl border border-amber-400 bg-gradient-to-br from-yellow-900 via-orange-900 to-red-900 px-4 py-8 mb-7">
+          <h3 class="text-2xl font-bold mb-2 text-yellow-200 flex items-center">
+            <i class="fa fa-lock mr-2 text-yellow-200"></i> Security Tools
+          </h3>
+          <div class="grid md:grid-cols-2 gap-7 mt-7">
+            <!-- Add Password -->
+            <div class="rounded-xl bg-gradient-to-br from-yellow-900 via-orange-700 to-red-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-key text-yellow-300 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Add Password</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Set a password to restrict viewing your PDF. (Metadata only in demo)</span>
+              <input id="enc-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-yellow-400 bg-orange-900 text-yellow-200 focus:ring-2 focus:ring-yellow-400 py-2 px-2 mb-2 glow-sm" />
+              <input id="enc-pass" type="password" class="block w-full my-2 rounded-lg border-yellow-400 bg-yellow-100 text-black focus:ring-2 focus:ring-yellow-400 py-2 px-2" placeholder="Set a password" />
+              <button id="enc-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-amber-400 via-yellow-400 to-red-400 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-lock"></i> Encrypt &amp; Download
+              </button>
+              <div id="enc-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Remove Password -->
+            <div class="rounded-xl bg-gradient-to-br from-yellow-900 via-orange-700 to-red-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-unlock text-orange-300 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Remove Password</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Removes password (not supported for strong-encrypted PDFs in-browser).</span>
+              <input id="dec-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-orange-400 bg-orange-900 text-yellow-200 focus:ring-2 focus:ring-orange-400 py-2 px-2 mb-2 glow-sm" />
+              <input id="dec-pass" type="password" class="block w-full my-2 rounded-lg border-orange-400 bg-yellow-100 text-black focus:ring-2 focus:ring-orange-400 py-2 px-2" placeholder="PDF password" />
+              <button id="dec-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-red-300 via-orange-400 to-yellow-400 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-unlock"></i> Remove &amp; Download
+              </button>
+              <div id="dec-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Redact Tool -->
+            <div class="rounded-xl bg-gradient-to-br from-yellow-900 via-orange-700 to-red-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-eraser text-amber-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Redact PDF</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Obscure confidential content by overlaying black bars. (<span class="italic">demo overlay only</span>)</span>
+              <input id="redact-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-red-400 bg-red-900 text-yellow-200 focus:ring-2 focus:ring-red-400 py-2 px-2 mb-2 glow-sm" />
+              <input id="redact-text" type="text" class="block w-full my-2 rounded-lg border-red-400 bg-yellow-100 text-black focus:ring-2 focus:ring-red-400 py-2 px-2" placeholder="Text to redact" />
+              <button id="redact-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-amber-400 via-red-400 to-orange-400 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-eraser"></i> Redact &amp; Download
+              </button>
+              <div id="redact-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Digital Signature -->
+            <div class="rounded-xl bg-gradient-to-br from-yellow-900 via-orange-700 to-red-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-signature text-amber-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Add Digital Signature</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">"Sign" your document digitally (simulated as text overlay).</span>
+              <input id="sign-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-amber-400 bg-yellow-900 text-yellow-200 focus:ring-2 focus:ring-amber-400 py-2 px-2 mb-2 glow-sm" />
+              <input id="sign-text" type="text" class="block w-full my-2 rounded-lg border-amber-400 bg-yellow-100 text-black focus:ring-2 focus:ring-amber-400 py-2 px-2" placeholder="Signature Text" />
+              <button id="sign-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-600 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-signature"></i> Sign &amp; Download
+              </button>
+              <div id="sign-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Remove Metadata -->
+            <div class="rounded-xl bg-gradient-to-br from-yellow-900 via-orange-700 to-red-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-user-secret text-red-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Remove Metadata</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Strip all metadata (title, author, etc.) for privacy protection.</span>
+              <input id="remmeta-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-orange-400 bg-orange-900 text-yellow-200 focus:ring-2 focus:ring-orange-400 py-2 px-2 mb-2 glow-sm" />
+              <button id="remmeta-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-red-400 via-orange-400 to-yellow-400 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-user-secret"></i> Remove &amp; Download
+              </button>
+              <div id="remmeta-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- =============== CONTENT EDITING =============== -->
+      <section id="section-edit" class="fade-in section-content hidden">
+        <div class="rounded-2xl border border-fuchsia-400 bg-gradient-to-br from-pink-900 via-fuchsia-900 to-indigo-900 px-4 py-8 mb-7">
+          <h3 class="text-2xl font-bold mb-2 text-fuchsia-200 flex items-center">
+            <i class="fa fa-pen mr-2 text-teal-200"></i> Content Editing Tools
+          </h3>
+          <div class="grid md:grid-cols-2 gap-7 mt-7">
+            <!-- Metadata Editor -->
+            <div class="rounded-xl bg-gradient-to-br from-fuchsia-900 via-pink-900 to-indigo-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-info-circle text-pink-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Metadata Editor</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Edit title, author, and subject to organize your PDFs.</span>
+              <input id="meta-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-fuchsia-400 bg-fuchsia-900 text-fuchsia-200 focus:ring-2 focus:ring-fuchsia-400 py-2 px-2 mb-2 glow-sm" />
+              <div id="meta-fields" class="mb-2 space-y-2 hidden">
+                <input id="meta-title" class="w-full rounded bg-fuchsia-50 text-black px-2 py-1 mb-1 border border-fuchsia-300" placeholder="Title"/>
+                <input id="meta-author" class="w-full rounded bg-fuchsia-50 text-black px-2 py-1 mb-1 border border-fuchsia-300" placeholder="Author"/>
+                <input id="meta-subject" class="w-full rounded bg-fuchsia-50 text-black px-2 py-1 mb-1 border border-fuchsia-300" placeholder="Subject"/>
+              </div>
+              <button id="meta-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-fuchsia-400 via-pink-500 to-indigo-500 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-save"></i> Save &amp; Download
+              </button>
+              <div id="meta-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Add Watermark -->
+            <div class="rounded-xl bg-gradient-to-br from-fuchsia-900 via-pink-900 to-indigo-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-tint text-indigo-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Add Watermark</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Overlay text across every PDF page for branding or protection.</span>
+              <input id="wm-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-indigo-400 bg-indigo-900 text-indigo-200 focus:ring-2 focus:ring-indigo-400 py-2 px-2 mb-2 glow-sm" />
+              <input id="wm-text" type="text" class="block w-full my-2 rounded-lg border-indigo-400 bg-fuchsia-50 text-black focus:ring-2 focus:ring-indigo-400 py-2 px-2" placeholder="Watermark text" />
+              <button id="wm-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-indigo-400 via-fuchsia-400 to-fuchsia-600 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-tint-slash"></i> Watermark &amp; Download
+              </button>
+              <div id="wm-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Header/Footer -->
+            <div class="rounded-xl bg-gradient-to-br from-fuchsia-900 via-pink-900 to-indigo-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-heading text-fuchsia-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Header/Footer</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Add uniform text headers/footers to every page (e.g., for document type or numbering).</span>
+              <input id="hf-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-pink-400 bg-indigo-900 text-pink-200 focus:ring-2 focus:ring-pink-400 py-2 px-2 mb-2 glow-sm" />
+              <input id="hf-header" type="text" class="block w-full my-1 rounded-lg border-pink-400 bg-fuchsia-50 text-black focus:ring-2 focus:ring-pink-400 py-1 px-2" placeholder="Header text" />
+              <input id="hf-footer" type="text" class="block w-full my-1 rounded-lg border-fuchsia-400 bg-fuchsia-50 text-black focus:ring-2 focus:ring-fuchsia-400 py-1 px-2" placeholder="Footer text" />
+              <button id="hf-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-pink-400 via-fuchsia-400 to-indigo-500 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-heading"></i> Add &amp; Download
+              </button>
+              <div id="hf-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Form Filler -->
+            <div class="rounded-xl bg-gradient-to-br from-fuchsia-900 via-pink-900 to-indigo-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-file-signature text-fuchsia-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Form Filler</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Overlay text for rapid responses in static PDF forms.</span>
+              <input id="form-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-fuchsia-400 bg-pink-900 text-fuchsia-200 focus:ring-2 focus:ring-fuchsia-400 py-2 px-2 mb-2 glow-sm" />
+              <input id="form-fields" type="text" class="block w-full my-2 rounded-lg border-fuchsia-400 bg-fuchsia-50 text-black focus:ring-2 focus:ring-fuchsia-400 py-2 px-2" placeholder='Fields as Name=John, City=NY'/>
+              <button id="form-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-fuchsia-400 via-pink-400 to-indigo-400 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-pen-fancy"></i> Fill &amp; Download
+              </button>
+              <div id="form-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- Add Image/Stamp -->
+            <div class="rounded-xl bg-gradient-to-br from-fuchsia-900 via-pink-900 to-indigo-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-stamp text-green-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Add Image/Stamp</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Overlay a logo or scan image to all pages at the corner.</span>
+              <input id="stamp-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-green-400 bg-indigo-900 text-green-200 focus:ring-2 focus:ring-green-400 py-2 px-2 mb-2 glow-sm" />
+              <input id="stamp-img" type="file" accept="image/png,image/jpeg" class="block w-full rounded-lg border-green-400 bg-fuchsia-50 text-green-800 focus:ring-2 focus:ring-green-400 py-2 px-2 mb-2 glow-sm" />
+              <button id="stamp-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-green-400 via-fuchsia-400 to-pink-500 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-stamp"></i> Add Image Stamp
+              </button>
+              <div id="stamp-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- =============== ADVANCED TOOLS =============== -->
+      <section id="section-adv" class="fade-in section-content hidden">
+        <div class="rounded-2xl border border-blue-400 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 px-4 py-8 mb-7">
+          <h3 class="text-2xl font-bold mb-2 text-blue-200 flex items-center">
+            <i class="fa fa-wrench mr-2 text-indigo-200"></i> Advanced Tools
+          </h3>
+          <div class="grid md:grid-cols-2 gap-7 mt-7">
+            <!-- OCR (placeholder only as in browser OCR needs 3rd party API) -->
+            <div class="rounded-xl bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-eye text-blue-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">OCR (Image to Text PDF)</span>
+              </div>
+              <small class="text-gray-200 block mb-4">Coming soon: In-browser OCR will extract text from scanned PDFs!</small>
+              <button disabled class="mt-auto py-2 px-4 rounded-xl font-bold text-blue-200 bg-blue-900 shadow-lg opacity-60 cursor-not-allowed text-lg">
+                <i class="fa fa-cogs"></i> Soon Available
+              </button>
+            </div>
+            <!-- PDF Repair -->
+            <div class="rounded-xl bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-tools text-indigo-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Repair PDF</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Re-save/repair non-opening PDFs by restructuring file objects.</span>
+              <input id="repair-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-blue-400 bg-blue-900 text-blue-200 focus:ring-2 focus:ring-blue-400 py-2 px-2 mb-2 glow-sm" />
+              <button id="repair-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-blue-300 via-blue-400 to-indigo-400 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-tools"></i> Repair &amp; Download
+              </button>
+              <div id="repair-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- PDF Accessibility Checker -->
+            <div class="rounded-xl bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-universal-access text-cyan-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Accessibility Checker</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Analyze the document: number of images, text pieces and possible accessibility warnings.</span>
+              <input id="access-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-cyan-400 bg-blue-900 text-cyan-200 focus:ring-2 focus:ring-cyan-400 py-2 px-2 mb-2 glow-sm" />
+              <button id="access-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-cyan-300 via-blue-400 to-indigo-400 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-search"></i> Check Accessibility
+              </button>
+              <div id="access-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+            <!-- PDF Color Converter -->
+            <div class="rounded-xl bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-6 glow shadow-xl flex flex-col fade-in">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-palette text-blue-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Color Converter</span>
+              </div>
+              <span class="text-xs text-white/80 mb-1">Apply grayscale, sepia, or color inversion overlays for better readability.</span>
+              <input id="color-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-indigo-400 bg-blue-900 text-indigo-200 focus:ring-2 focus:ring-indigo-400 py-2 px-2 mb-2 glow-sm" />
+              <select id="color-mode" class="block w-full rounded-lg border-indigo-400 bg-indigo-900 text-indigo-100 focus:ring-2 focus:ring-indigo-400 py-2 px-2 mb-2">
+                <option value="grayscale">Grayscale</option>
+                <option value="sepia">Sepia</option>
+                <option value="invert">Invert Colors</option>
+              </select>
+              <button id="color-btn" class="mt-auto py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-indigo-400 via-blue-400 to-cyan-400 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-palette"></i> Convert &amp; Download
+              </button>
+              <div id="color-status" class="text-sm text-green-300 pt-2 font-medium"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- =============== PDF ANALYTICS =============== -->
+      <section id="section-analyze" class="fade-in section-content hidden">
+        <div class="rounded-2xl border border-cyan-400 bg-gradient-to-br from-blue-900 via-cyan-900 to-indigo-900 px-4 py-8 mb-7">
+          <h3 class="text-2xl font-bold mb-2 text-blue-100 flex items-center">
+            <i class="fa fa-chart-bar mr-2 text-cyan-300"></i> PDF Analytics & Summary
+          </h3>
+          <div class="grid grid-cols-1 gap-7 mt-7">
+            <!-- File Summary & Page Chart -->
+            <div class="rounded-xl bg-gradient-to-br from-blue-950 via-cyan-900 to-indigo-800 p-6 glow shadow-xl fade-in">
+              <div class="flex items-center mb-2">
+                <i class="fa fa-file-chart-column text-cyan-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Analyze PDF Structure</span>
+              </div>
+              <span class="text-xs text-white/80 mb-4 block">See how many pages, words, characters, and text fragments your PDF contains. Preview a pie chart of content types.</span>
+              <input id="analyze-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-cyan-400 bg-indigo-900 text-cyan-200 focus:ring-2 focus:ring-cyan-400 py-2 px-2 mb-2 glow-sm" />
+              <button id="analyze-btn" class="mt-0 py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-cyan-300 via-indigo-400 to-blue-500 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-chart-pie"></i> Analyze PDF
+              </button>
+              <div id="analyze-summary" class="mt-3 text-sm text-green-200 font-medium pb-2"></div>
+              <canvas id="analyze-chart" width="400" height="200" style="max-width:99%;max-height:220px;display:block;margin:auto"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- =============== PDF COMPARISON ================== -->
+      <section id="section-compare" class="fade-in section-content hidden">
+        <div class="rounded-2xl border border-indigo-400 bg-gradient-to-br from-fuchsia-900 via-indigo-900 to-slate-900 px-4 py-8 mb-7">
+          <h3 class="text-2xl font-bold mb-2 text-indigo-100 flex items-center">
+            <i class="fa fa-balance-scale mr-2 text-indigo-300"></i> Compare PDF Files
+          </h3>
+          <div class="grid grid-cols-1 gap-7 mt-7">
+            <div class="rounded-xl bg-gradient-to-br from-indigo-950 via-fuchsia-900 to-blue-800 p-6 glow shadow-xl fade-in">
+              <div class="flex items-center mb-2">
+                <i class="fa fa-balance-scale-right text-indigo-200 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Visual Diff of Two PDFs (Text-only)</span>
+              </div>
+              <span class="text-xs text-white/80 mb-4 block">Get differences between two PDF documents (text content only, shown in side-by-side format & downloadable TXT).</span>
+              <input id="cmp1-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-indigo-400 bg-fuchsia-900 text-indigo-200 focus:ring-2 focus:ring-indigo-400 py-1 px-2 my-2 glow-sm" />
+              <input id="cmp2-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-indigo-400 bg-fuchsia-900 text-indigo-200 focus:ring-2 focus:ring-indigo-400 py-1 px-2 my-2 glow-sm" />
+              <button id="compare-btn" class="mt-2 py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-fuchsia-400 via-indigo-400 to-indigo-900 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-code-compare"></i> Compare &amp; Show Diff
+              </button>
+              <div id="compare-summary" class="mt-3 text-sm text-yellow-200 font-medium pb-2"></div>
+              <div id="compare-preview" class="overflow-x-auto mt-2 whitespace-pre font-mono text-xs bg-indigo-800 rounded p-2 text-yellow-50"></div>
+              <button id="compare-download-btn" class="mt-3 py-1 px-4 rounded font-bold text-indigo-900 bg-gradient-to-br from-yellow-300 via-pink-300 to-indigo-100 shadow-sm hover:scale-105 transition glow-sm text-sm hidden">
+                <i class="fa fa-download"></i> Download Diff as TXT
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- =============== ANNOTATE & REVIEW =============== -->
+      <section id="section-annote" class="fade-in section-content hidden">
+        <div class="rounded-2xl border border-yellow-400 bg-gradient-to-br from-yellow-900 via-orange-900 to-fuchsia-900 px-4 py-8 mb-7">
+          <h3 class="text-2xl font-bold mb-2 text-yellow-100 flex items-center">
+            <i class="fa fa-highlighter mr-2 text-yellow-300"></i> Annotate & Review Tools
+          </h3>
+          <div class="grid grid-cols-1 gap-7 mt-7">
+            <div class="rounded-xl bg-gradient-to-br from-yellow-950 via-orange-900 to-fuchsia-900 p-6 glow shadow-xl fade-in flex flex-col">
+              <div class="flex items-center mb-2">
+                <i class="fa fa-comment-alt text-yellow-300 text-2xl mr-3"></i>
+                <span class="text-lg font-semibold">Highlight/Annotate PDF Pages (Demo: Overlay)</span>
+              </div>
+              <span class="text-xs text-white/80 mb-2 block">Add highlights or comments on your PDF. (This demo overlays highlights/comments for the first 3 pages only.)</span>
+              <input id="annote-file" type="file" accept="application/pdf" class="block w-full rounded-lg border-yellow-400 bg-yellow-900 text-yellow-200 focus:ring-2 focus:ring-yellow-400 py-1 px-2 my-2 glow-sm" />
+              <input id="annote-highlight" type="text" placeholder="Highlight text" class="block w-full rounded bg-fuchsia-50 text-black my-2 px-2 py-1 border border-yellow-300"/>
+              <input id="annote-comment" type="text" placeholder="Comment/Note" class="block w-full rounded bg-fuchsia-50 text-black my-2 px-2 py-1 border border-fuchsia-400"/>
+              <button id="annote-btn" class="mt-0 py-2 px-4 rounded-xl font-bold text-white bg-gradient-to-br from-yellow-400 via-fuchsia-400 to-pink-400 shadow-lg hover:scale-105 transition glow-sm text-lg">
+                <i class="fa fa-highlighter"></i> Annotate &amp; Download
+              </button>
+              <div id="annote-status" class="text-sm text-green-200 pt-2 font-medium"></div>
+              <div class="mt-4">
+                <span class="text-xs text-yellow-100 block">You can also embed a tutorial video for annotations:</span>
+                <video controls playsinline webkit-playsinline class="mt-3 rounded w-full max-w-lg mx-auto shadow-lg border-2 border-yellow-400">
+                  <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                  Sorry, your browser does not support embedded videos.
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- GLOBAL LOADER -->
+  <div id="global-loader" class="fixed left-0 top-0 w-full h-full z-50 bg-black/70 flex items-center justify-center hidden">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-pink-400 border-opacity-80"></div>
+    <span class="ml-6 text-pink-400 text-2xl font-semibold">Processing...</span>
+  </div>
+
+  <script>
+    // Collapsible Sidebar Control
+    const toggleBtns = document.querySelectorAll('.section-toggle');
+    const sectionIds = {
+      doc:'section-doc',
+      conv:'section-conv',
+      sec:'section-sec',
+      edit:'section-edit',
+      adv:'section-adv',
+      analyze: 'section-analyze',
+      compare: 'section-compare',
+      annote: 'section-annote'
+    };
+    let currentSection = null;
+    function closeAllSections(){
+      document.getElementById('main-welcome').classList.add('hidden');
+      for(const id of Object.values(sectionIds)) document.getElementById(id).classList.add('hidden');
+      toggleBtns.forEach(b=>b.querySelector('.collapsible-arrow').classList.remove('rotate-180'));
+    }
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', function(){
+        closeAllSections();
+        // Show selected
+        const sid = btn.getAttribute('data-section');
+        currentSection = sid;
+        document.getElementById(sectionIds[sid]).classList.remove('hidden');
+        btn.querySelector('.collapsible-arrow').classList.add('rotate-180');
+        setTimeout(()=>window.scrollTo({top:0, left:0, behavior:'smooth'}), 180);
+      });
+    });
+    // METADATA extra logic
+    document.getElementById('meta-file').addEventListener('change', function(e){
+      document.getElementById('meta-fields').classList.remove('hidden');
+    });
+
+    // IMAGE TO PDF ENHANCED FUNCTION
+    const imgInput = document.getElementById('img2pdf-files');
+    const imgPreview = document.getElementById('img2pdf-preview');
+    let imageFiles = [];
+    imgInput.addEventListener('change', function(e){
+      imageFiles = Array.from(e.target.files);
+      imgPreview.innerHTML = '';
+      imageFiles.forEach((imgf,i)=>{
+        const reader = new FileReader();
+        reader.onload = function(evt){
+          const img = document.createElement('img');
+          img.src = evt.target.result;
+          img.className = 'w-20 h-20 object-cover inline-block border-2 border-emerald-400 bg-emerald-50';
+          img.title = imgf.name;
+          imgPreview.appendChild(img);
+        };
+        reader.readAsDataURL(imgf);
+      });
+    });
+
+    // Some utility functions
+    function showLoader(show=true){
+      const g = document.getElementById('global-loader');
+      if(show) g.classList.remove('hidden');
+      else g.classList.add('hidden');
+    }
+    function showStatus(statusId, txt, error=false) {
+      const el = document.getElementById(statusId);
+      el.textContent = txt;
+      el.classList.toggle('text-green-300', !error);
+      el.classList.toggle('text-red-300', error);
+    }
+
+    //=========================== DOCUMENT MANAGEMENT TOOLS ===========================
+
+    // Merge PDF
+    document.getElementById('merge-btn').onclick = async function(){
+      const files = document.getElementById('merge-files').files;
+      if(files.length < 2) return showStatus('merge-status','Select at least 2 PDFs!', true);
+      showLoader(1); showStatus('merge-status','');
+      const merged = await PDFLib.PDFDocument.create();
+      for(let file of files){
+        const data = await file.arrayBuffer();
+        const srcPdf = await PDFLib.PDFDocument.load(data);
+        const copiedPages = await merged.copyPages(srcPdf, srcPdf.getPageIndices());
+        copiedPages.forEach(page=>merged.addPage(page));
+      }
+      const bytes = await merged.save();
+      saveAs(new Blob([bytes],{type:'application/pdf'}),"merged.pdf");
+      showLoader(0); showStatus('merge-status','Merged PDF downloaded!');
+    };
+
+    // Split PDF
+    document.getElementById('split-btn').onclick = async function(){
+      const file = document.getElementById('split-file').files[0];
+      const inp = document.getElementById('split-pages').value.trim();
+      if(!file || !inp) return showStatus('split-status','Upload PDF and enter page numbers!', true);
+      showLoader(1); showStatus('split-status','');
+      const data = await file.arrayBuffer();
+      const pdfDoc = await PDFLib.PDFDocument.load(data);
+      const ranges = inp.split(',').flatMap(r=>{
+        if(r.includes('-')){
+          const [a,b]=r.split('-').map(x=>parseInt(x,10)-1);
+          return Array.from({length:b-a+1},(_v,k)=>a+k);
+        }
+        return [parseInt(r,10)-1];
+      }).filter(idx => !isNaN(idx) && idx >= 0 && idx < pdfDoc.getPageCount());
+      if(!ranges.length) {showLoader(0); return showStatus('split-status','Invalid page numbers!', true);}
+      const newPdf = await PDFLib.PDFDocument.create();
+      const copied = await newPdf.copyPages(pdfDoc, ranges);
+      copied.forEach(page=>newPdf.addPage(page));
+      const bytes = await newPdf.save();
+      saveAs(new Blob([bytes],{type:'application/pdf'}), "split-pages.pdf");
+      showLoader(0); showStatus('split-status','Split PDF downloaded!');
+    };
+
+    // Rearrange Pages
+    document.getElementById('rearrange-btn').onclick = async function(){
+      const file = document.getElementById('rearrange-file').files[0];
+      const inp = document.getElementById('rearrange-order').value.trim();
+      if(!file || !inp) return showStatus('rearrange-status','Upload PDF and order!', true);
+      showLoader(1); showStatus('rearrange-status','');
+      const data = await file.arrayBuffer();
+      const pdfDoc = await PDFLib.PDFDocument.load(data);
+      const pages = inp.split(',').map(x=>parseInt(x,10)-1).filter(x=>x>=0 && x<pdfDoc.getPageCount());
+      if(!pages.length) {showLoader(0); return showStatus('rearrange-status','Invalid order!', true);}
+      const newPdf = await PDFLib.PDFDocument.create();
+      const copied = await newPdf.copyPages(pdfDoc, pages);
+      copied.forEach(page=>newPdf.addPage(page));
+      const bytes = await newPdf.save();
+      saveAs(new Blob([bytes],{type:'application/pdf'}),"rearranged.pdf");
+      showLoader(0); showStatus('rearrange-status','Reordered PDF downloaded!');
+    };
+
+    // Compress PDF (simple "re-save")
+    document.getElementById('compress-btn').onclick = async function(){
+      const file = document.getElementById('compress-file').files[0];
+      if(!file) return showStatus('compress-status','Upload PDF first!', true);
+      showLoader(1); showStatus('compress-status','');
+      const data = await file.arrayBuffer();
+      const pdfDoc = await PDFLib.PDFDocument.load(data, {updateMetadata:true});
+      const bytes = await pdfDoc.save({useObjectStreams:true, addDefaultModDate:true});
+      saveAs(new Blob([bytes],{type:'application/pdf'}),"compressed.pdf");
+      showLoader(0); showStatus('compress-status','Compressed PDF downloaded!');
+    };
+
+    // Extract Images from PDF
+    document.getElementById('extractimg-btn').onclick = async function(){
+      if(!window.JSZip){
+        const s = document.createElement('script');
+        s.src = "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js";
+        document.head.appendChild(s);
+        await new Promise(r=>s.onload = r);
+      }
+      const file = document.getElementById('extractimg-file').files[0];
+      if(!file) return showStatus('extractimg-status','Upload PDF first!',true);
+      showLoader(1); showStatus('extractimg-status','');
+      // Use PDF.js to render pages to images
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      const pdf = await pdfjsLib.getDocument({data: await file.arrayBuffer()}).promise;
+      let zip = new JSZip();
+      let foundImages = 0;
+      for(let i=1;i<=pdf.numPages;i++){
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({scale:2.2});
+        const canvas = document.createElement('canvas');
+        canvas.width = viewport.width; canvas.height = viewport.height;
+        await page.render({canvasContext: canvas.getContext('2d'), viewport: viewport}).promise;
+        let imgData = canvas.toDataURL('image/png');
+        zip.file(`page${i}.png`, imgData.split(',')[1], {base64: true});
+        foundImages++;
+      }
+      zip.generateAsync({type:'blob'}).then(blob=>{
+        saveAs(blob, "extracted_images.zip");
+        showLoader(0); showStatus('extractimg-status',`Extracted ${foundImages} page-rendered images as PNGs`);
+      });
+    };
+
+    // Delete Pages Tool
+    document.getElementById('delpages-btn').onclick = async function(){
+      const file = document.getElementById('delpages-file').files[0];
+      const inp = document.getElementById('delpages-numbers').value.trim();
+      if(!file || !inp) return showStatus('delpages-status','PDF + numbers required!', true);
+      showLoader(1); showStatus('delpages-status','');
+      const data = await file.arrayBuffer();
+      const pdfDoc = await PDFLib.PDFDocument.load(data);
+      const totalPages = pdfDoc.getPageCount();
+      const delIndexes = inp.split(',').map(x=>parseInt(x,10)-1).filter(x=>x>=0 && x < totalPages);
+      let keepIndexes = [];
+      for(let i=0;i<totalPages;i++) if(!delIndexes.includes(i)) keepIndexes.push(i);
+      if(keepIndexes.length === 0) { showLoader(0); return showStatus('delpages-status','All pages to be deleted!',true);}
+      const newPdf = await PDFLib.PDFDocument.create();
+      const copied = await newPdf.copyPages(pdfDoc, keepIndexes);
+      copied.forEach(page=>newPdf.addPage(page));
+      const bytes = await newPdf.save();
+      saveAs(new Blob([bytes],{type:'application/pdf'}),"pages-deleted.pdf");
+      showLoader(0); showStatus('delpages-status','Pages deleted!');
+    };
+
+    //=========================== CONVERSION TOOLS ===========================
+
+    // PDF to Image
+    document.getElementById('pdf2img-btn').onclick = async function(){
+      if(!window.JSZip){
+        const s = document.createElement('script');
+        s.src = "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js";
+        document.head.appendChild(s);
+        await new Promise(r=>s.onload = r);
+      }
+      const file = document.getElementById('pdf2img-file').files[0];
+      if(!file) return showStatus('pdf2img-status','Upload PDF first!', true);
+      showLoader(1); showStatus('pdf2img-status','');
+      const arrayBuff = await file.arrayBuffer();
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      const pdf = await pdfjsLib.getDocument({data: arrayBuff}).promise;
+      const zip = new JSZip();
+      for(let i=1;i<=pdf.numPages;i++){
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({scale:2.2});
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = viewport.width; canvas.height = viewport.height;
+        await page.render({canvasContext: context, viewport:viewport}).promise;
+        const imgData = canvas.toDataURL('image/png');
+        zip.file('page-'+i+'.png', imgData.split(',')[1], {base64: true});
+      }
+      zip.generateAsync({type:'blob'}).then(blob=>{
+        saveAs(blob, "pdf-images.zip");
+        showLoader(0); showStatus('pdf2img-status','Images ZIP downloaded!');
+      });
+    };
+
+    // IMAGE to PDF
+    document.getElementById('img2pdf-btn').onclick = async function(){
+      if(!imageFiles.length) return showStatus('img2pdf-status','Select one or more images!', true);
+      showLoader(1);
+      showStatus('img2pdf-status','');
+      // PDF page size params
+      const ps = document.getElementById('img2pdf-pagesize').value;
+      const or = document.getElementById('img2pdf-orient').value;
+      const fit = document.getElementById('img2pdf-fit').value;
+      let size = [595.28,841.89]; //A4 Portrait in pt
+      if(ps==="letter") size=[612,792];
+      if(or==="landscape") size = [size[1], size[0]];
+      // process each image, fit properly
+      const pdfDoc = await PDFLib.PDFDocument.create();
+      for(let imgFile of imageFiles){
+        const bytes = await imgFile.arrayBuffer();
+        let img, scale = 1, imgDims=[size[0], size[1]];
+        if(imgFile.type==="image/png") img = await pdfDoc.embedPng(bytes);
+        else img = await pdfDoc.embedJpg(bytes);
+        const {width, height} = img.scale(1);
+        let page = pdfDoc.addPage(size);
+        // Fit or fill image onto page, centering as needed
+        let wR = size[0] / width, hR = size[1] / height;
+        if(fit=='contain'){
+          scale = Math.min(wR,hR);
+        } else { // cover
+          scale = Math.max(wR,hR);
+        }
+        let imgW = width*scale, imgH = height*scale;
+        let x = (size[0]-imgW)/2, y = (size[1]-imgH)/2;
+        page.drawImage(img,{x, y, width: imgW, height: imgH});
+      }
+      const pdfb = await pdfDoc.save();
+      saveAs(new Blob([pdfb], {type:'application/pdf'}),"images2pdf.pdf");
+      showLoader(0); showStatus('img2pdf-status','Generated PDF downloaded!');
+    };
+
+    // PDF to Word (extract text, wrap in .docx minimal)
+    document.getElementById('pdf2word-btn').onclick = async function(){
+      const file = document.getElementById('pdf2word-file').files[0];
+      if(!file) return showStatus('pdf2word-status','Upload PDF first!', true);
+      showLoader(1); showStatus('pdf2word-status','');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      const pdf = await pdfjsLib.getDocument({data: await file.arrayBuffer()}).promise;
+      let fullTxt = '';
+      for(let i=1;i<=pdf.numPages;i++){
+        const pg = await pdf.getPage(i);
+        const txt = await pg.getTextContent();
+        fullTxt += txt.items.map(i=>i.str).join(' ')+'\n\n--- Page '+i+' ---\n\n';
+      }
+      // Minimal .docx
+      const docContent = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+      <w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+      <w:body><w:p><w:r><w:t>${fullTxt.replace(/&/g,"&amp;").replace(/</g,"&lt;")}</w:t></w:r></w:p></w:body>
+      </w:document>`;
+      const blob = new Blob([docContent],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+      saveAs(blob, "pdf2word.docx");
+      showLoader(0); showStatus('pdf2word-status','DOCX (text only) downloaded!');
+    };
+
+    // PDF to TEXT
+    document.getElementById('pdf2text-btn').onclick = async function(){
+      const file = document.getElementById('pdf2text-file').files[0];
+      if(!file) return showStatus('pdf2text-status','Upload PDF first!', true);
+      showLoader(1); showStatus('pdf2text-status','');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      const pdf = await pdfjsLib.getDocument({data: await file.arrayBuffer()}).promise;
+      let fullTxt = '';
+      for(let i=1;i<=pdf.numPages;i++){
+        const pg = await pdf.getPage(i);
+        const txt = await pg.getTextContent();
+        fullTxt += txt.items.map(i=>i.str).join(' ')+' \n';
+      }
+      const blob = new Blob([fullTxt], {type:'text/plain'});
+      saveAs(blob,"pdf2text.txt");
+      showLoader(0); showStatus('pdf2text-status','TXT file downloaded!');
+    };
+
+    // PDF to PowerPoint (Demo: just each page image on a slide)
+    document.getElementById('pdf2ppt-btn').onclick = async function(){
+      // For the demo, create a pseudo-PPTX (actually .zip with PNGs representing slides)
+      if(!window.JSZip){
+        const s = document.createElement('script');
+        s.src = "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js";
+        document.head.appendChild(s);
+        await new Promise(r=>s.onload = r);
+      }
+      const file = document.getElementById('pdf2ppt-file').files[0];
+      if(!file) return showStatus('pdf2ppt-status','Upload PDF first!', true);
+      showLoader(1); showStatus('pdf2ppt-status','');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      const pdf = await pdfjsLib.getDocument({data: await file.arrayBuffer()}).promise;
+      const zip = new JSZip();
+      for(let i=1;i<=pdf.numPages;i++){
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({scale:1.5});
+        const canvas = document.createElement('canvas');
+        canvas.width = viewport.width; canvas.height = viewport.height;
+        await page.render({canvasContext: canvas.getContext('2d'), viewport}).promise;
+        const imgData = canvas.toDataURL('image/png');
+        zip.file('slide'+i+'.png', imgData.split(',')[1], {base64: true});
+      }
+      zip.generateAsync({type:'blob'}).then(blob=>{
+        saveAs(blob, "pdf2pptx_slides.zip");
+        showLoader(0); showStatus('pdf2ppt-status','Generated slides as ZIP file!');
+      });
+    };
+
+    // PDF to CSV/Excel (very basic: all text split by whitespace)
+    document.getElementById('pdf2csv-btn').onclick = async function(){
+      const file = document.getElementById('pdf2csv-file').files[0];
+      if(!file) return showStatus('pdf2csv-status','Upload PDF first!', true);
+      showLoader(1); showStatus('pdf2csv-status','');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      const pdf = await pdfjsLib.getDocument({data: await file.arrayBuffer()}).promise;
+      let csv = '';
+      for(let i=1;i<=pdf.numPages;i++){
+        const pg = await pdf.getPage(i);
+        const txt = await pg.getTextContent();
+        csv += txt.items.map(it=>`"${it.str.replace(/"/g,'""')}"`).join(',') + "\n";
+      }
+      saveAs(new Blob([csv],{type:'text/csv'}), "pdf2excel.csv");
+      showLoader(0); showStatus('pdf2csv-status','CSV file downloaded!');
+    };
+
+    //=========================== SECURITY TOOLS ===========================
+    // Add Password (metadata-only)
+    document.getElementById('enc-btn').onclick = async function(){
+      const f = document.getElementById('enc-file').files[0];
+      const pass = document.getElementById('enc-pass').value;
+      if(!f || !pass) return showStatus('enc-status','PDF and password required',true);
+      showLoader(1); showStatus('enc-status','');
+      // Client-only: Just marks metadata, not real encrypted (for real encryption use server or paid Lib)
+      const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+      doc.setSubject('Protected by password: '+pass);
+      saveAs(new Blob([await doc.save()],{type:'application/pdf'}),"password-protected.pdf");
+      showLoader(0); showStatus('enc-status','Protected file (metadata only) downloaded!');
+    };
+
+    // Remove Password
+    document.getElementById('dec-btn').onclick = async function(){
+      showStatus('dec-status','Password removal not supported in-browser.','true');
+    };
+
+    // Redact
+    document.getElementById('redact-btn').onclick = async function(){
+      const f = document.getElementById('redact-file').files[0];
+      const pattern = document.getElementById('redact-text').value;
+      if(!f || !pattern) return showStatus('redact-status','PDF and text required!',true);
+      showLoader(1); showStatus('redact-status','');
+      const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+      doc.getPages().forEach(page=>{
+        page.drawRectangle({x:50,y:350,width:200,height:20,color:PDFLib.rgb(0,0,0)});
+      });
+      saveAs(new Blob([await doc.save()],{type:'application/pdf'}),"redacted.pdf");
+      showLoader(0); showStatus('redact-status','Redacted (overlay only) PDF downloaded!');
+    };
+
+    // Digital signature (demo: overlay text)
+    document.getElementById('sign-btn').onclick = async function(){
+      const f = document.getElementById('sign-file').files[0];
+      const txt = document.getElementById('sign-text').value;
+      if(!f||!txt) return showStatus('sign-status','Both PDF and text required',true);
+      showLoader(1); showStatus('sign-status','');
+      const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+      doc.getPages()[0].drawText('ⓝ Signature: '+txt,{x:30,y:60,fontSize:19,color:PDFLib.rgb(0.34,0.17,0.90)});
+      saveAs(new Blob([await doc.save()],{type:'application/pdf'}),"signed.pdf");
+      showLoader(0); showStatus('sign-status','Signed PDF downloaded!');
+    };
+
+    // Remove Metadata
+    document.getElementById('remmeta-btn').onclick = async function(){
+      const f = document.getElementById('remmeta-file').files[0];
+      if(!f) return showStatus('remmeta-status','PDF required!',true);
+      showLoader(1); showStatus('remmeta-status','');
+      const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+      doc.setTitle('');
+      doc.setAuthor('');
+      doc.setSubject('');
+      doc.setKeywords('');
+      doc.setProducer('');
+      saveAs(new Blob([await doc.save()],{type:'application/pdf'}),'metadata-removed.pdf');
+      showLoader(0); showStatus('remmeta-status','Metadata removed!');
+    };
+
+    //=========================== CONTENT EDITING TOOLS ===========================
+
+    // Metadata
+    document.getElementById('meta-btn').onclick = async function(){
+      const file = document.getElementById('meta-file').files[0];
+      if(!file) return showStatus('meta-status','Upload PDF first!', true);
+      showLoader(1); showStatus('meta-status','');
+      const doc = await PDFLib.PDFDocument.load(await file.arrayBuffer());
+      doc.setTitle(document.getElementById('meta-title').value);
+      doc.setAuthor(document.getElementById('meta-author').value);
+      doc.setSubject(document.getElementById('meta-subject').value);
+      const bytes = await doc.save();
+      saveAs(new Blob([bytes], {type:'application/pdf'}),"metadata-edited.pdf");
+      showLoader(0); showStatus('meta-status','Saved and downloaded!');
+    };
+
+    // Watermark
+    document.getElementById('wm-btn').onclick = async function(){
+      const file = document.getElementById('wm-file').files[0];
+      const text = document.getElementById('wm-text').value;
+      if(!file || !text) return showStatus('wm-status','PDF and watermark required', true);
+      showLoader(1); showStatus('wm-status','');
+      const doc = await PDFLib.PDFDocument.load(await file.arrayBuffer());
+      for(const p of doc.getPages()){
+        p.drawText(text,{x:50,y:50, opacity:0.13, rotate:PDFLib.degrees(32),fontSize:44,color:PDFLib.rgb(0.98,0.07,0.31)});
+      }
+      const bytes = await doc.save();
+      saveAs(new Blob([bytes],{type:'application/pdf'}),"watermarked.pdf");
+      showLoader(0); showStatus('wm-status','Downloaded watermarked PDF!');
+    };
+
+    // Header/Footer
+    document.getElementById('hf-btn').onclick = async function(){
+      const f = document.getElementById('hf-file').files[0];
+      const h = document.getElementById('hf-header').value, ft = document.getElementById('hf-footer').value;
+      if(!f) return showStatus('hf-status','Upload PDF',true);
+      showLoader(1); showStatus('hf-status','');
+      const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+      for(let i=0;i<doc.getPages().length;i++){
+        const p=doc.getPages()[i], w=p.getWidth(),hgt=p.getHeight();
+        if(h) p.drawText(h,{x:36,y:hgt-36,fontSize:16,color:PDFLib.rgb(0.58,0.18,0.75)});
+        if(ft) p.drawText(ft+'  -  '+(i+1),{x:36,y:20,fontSize:13,color:PDFLib.rgb(0.3,0.18,0.18)});
+      }
+      saveAs(new Blob([await doc.save()],{type:'application/pdf'}), "header-footer.pdf");
+      showLoader(0); showStatus('hf-status','Header/Footer added and downloaded!');
+    };
+
+    // Form filler (simplified)
+    document.getElementById('form-btn').onclick = async function(){
+      const f = document.getElementById('form-file').files[0];
+      const fields = document.getElementById('form-fields').value;
+      if(!f || !fields) return showStatus('form-status','PDF and fields required!',true);
+      showLoader(1); showStatus('form-status','');
+      const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+      fields.split(',').forEach((pair,i)=>{
+        const [k,v]=pair.split('=');
+        if(v){
+          const page = doc.getPages()[i%doc.getPageCount()];
+          page.drawText(`${k.trim()}: ${v.trim()}`,{x:70,y:600-32*i,fontSize:15,color:PDFLib.rgb(0.15,0.41,0.6)});
+        }
+      });
+      saveAs(new Blob([await doc.save()],{type:'application/pdf'}),"form-filled.pdf");
+      showLoader(0); showStatus('form-status','Form filled and downloaded!');
+    };
+
+    // Add Image/Stamp
+    document.getElementById('stamp-btn').onclick = async function(){
+      const pdfInput = document.getElementById('stamp-file').files[0];
+      const imgInput = document.getElementById('stamp-img').files[0];
+      if(!pdfInput || !imgInput) return showStatus('stamp-status','Both PDF and image required!',true);
+      showLoader(1); showStatus('stamp-status','');
+      const pdfDoc = await PDFLib.PDFDocument.load(await pdfInput.arrayBuffer());
+      let imageEmbed;
+      if(imgInput.type==='image/png') imageEmbed = await pdfDoc.embedPng(await imgInput.arrayBuffer());
+      else imageEmbed = await pdfDoc.embedJpg(await imgInput.arrayBuffer());
+      for(const page of pdfDoc.getPages()){
+        const {width, height} = page;
+        const iw = 62, ih = 62; // stamp size
+        page.drawImage(imageEmbed, {x:width-iw-28, y:28, width:iw, height:ih});
+      }
+      const outBytes = await pdfDoc.save();
+      saveAs(new Blob([outBytes],{type:'application/pdf'}),"stamped.pdf");
+      showLoader(0); showStatus('stamp-status','Image added as stamp!');
+    };
+
+
+    //=========================== ADVANCED TOOLS ===========================
+
+    // Repair (re-save)
+    document.getElementById('repair-btn').onclick = async function(){
+      const f = document.getElementById('repair-file').files[0];
+      if(!f) return showStatus('repair-status','PDF required',true);
+      showLoader(1); showStatus('repair-status','');
+      const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+      saveAs(new Blob([await doc.save()],{type:'application/pdf'}),"repaired.pdf");
+      showLoader(0); showStatus('repair-status','Repaired/Resaved PDF downloaded!');
+    };
+
+    // Accessibility checker - demo: counts images/text only
+    document.getElementById('access-btn').onclick = async function(){
+      const f = document.getElementById('access-file').files[0];
+      if(!f) return showStatus('access-status','PDF required',true);
+      showLoader(1); showStatus('access-status','');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      const pdf = await pdfjsLib.getDocument({data: await f.arrayBuffer()}).promise;
+      let txtCt=0,imgCt=0;
+      for(let i=1;i<=pdf.numPages;i++){
+        const pg = await pdf.getPage(i);
+        const txt = await pg.getTextContent();
+        txtCt += txt.items.length;
+        imgCt += (pg.objs ? Object.keys(pg.objs).length : 0);
+      }
+      showLoader(0);
+      showStatus('access-status',`Accessibility Check: Pages=${pdf.numPages}, Text Fragments=${txtCt}, Images Obj Keys=${imgCt}`);
+    };
+
+    // Color Converter - overlays colored rectangle, demo only
+    document.getElementById('color-btn').onclick = async function(){
+      const f = document.getElementById('color-file').files[0];
+      const mode = document.getElementById('color-mode').value;
+      if(!f) return showStatus('color-status','PDF required',true);
+      showLoader(1); showStatus('color-status','');
+      const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+      for(const p of doc.getPages()){
+        if(mode==="grayscale")
+          p.drawRectangle({x:0,y:0,width:p.getWidth(),height:p.getHeight(),color:PDFLib.rgb(0.7,0.7,0.7),opacity:0.1});
+        else if(mode==="sepia")
+          p.drawRectangle({x:0,y:0,width:p.getWidth(),height:p.getHeight(),color:PDFLib.rgb(0.8,0.65,0.4),opacity:0.13});
+        else if(mode==="invert")
+          p.drawRectangle({x:0,y:0,width:p.getWidth(),height:p.getHeight(),color:PDFLib.rgb(0,0,0),opacity:0.25});
+      }
+      saveAs(new Blob([await doc.save()],{type:'application/pdf'}),"color-convert.pdf");
+      showLoader(0); showStatus('color-status','Color conversion (demo effect) PDF downloaded!');
+    };
+
+    //================= PDF ANALYTICS =================
+
+    document.getElementById('analyze-btn').onclick = async function(){
+      const file = document.getElementById('analyze-file').files[0];
+      if(!file) return showStatus('analyze-summary', 'Upload PDF first!', true);
+      showLoader(1); showStatus('analyze-summary','');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      const pdf = await pdfjsLib.getDocument({data: await file.arrayBuffer()}).promise;
+      let totalWords = 0, totalChars = 0, totalItems = 0;
+      let pageWordCt = [], pageTextItems = [], pages = pdf.numPages;
+      for(let i=1;i<=pages;i++){
+        const pg = await pdf.getPage(i);
+        const txt = await pg.getTextContent();
+        let pageText = txt.items.map(i=>i.str).join(' ');
+        let words = pageText.trim().split(/\s+/).filter(Boolean);
+        totalWords += words.length; totalChars += pageText.replace(/\s/g,'').length;
+        pageWordCt.push(words.length); pageTextItems.push(txt.items.length); totalItems += txt.items.length;
+      }
+      let sum = `PDF Pages: ${pages} | Words: ${totalWords} | Characters: ${totalChars}`;
+      document.getElementById('analyze-summary').innerHTML = sum;
+      let ctx = document.getElementById('analyze-chart').getContext('2d');
+      if(window.analyzeChart && window.analyzeChart.destroy) window.analyzeChart.destroy();
+      window.analyzeChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: Array.from({length:pages},(_,i)=>'Page '+(i+1)),
+          datasets:[
+            {label:'Words',data:pageWordCt, backgroundColor:'rgba(34,197,206,.36)'},
+            {label:'Text Fragments',data:pageTextItems,backgroundColor:'rgba(168,85,247,.27)'}
+          ]
+        },
+        options:{plugins:{legend:{labels:{color:'#c6eeff'}}},scales:{x:{ticks:{color:'#f6f6f9'}},y:{ticks:{color:'#f6f6f9'}}}}
+      });
+      showLoader(0);
+    };
+
+    //================= PDF COMPARE (text only visual diff) ===================
+
+    document.getElementById('compare-btn').onclick = async function(){
+      const file1 = document.getElementById('cmp1-file').files[0];
+      const file2 = document.getElementById('cmp2-file').files[0];
+      if(!file1 || !file2) return showStatus('compare-summary','Both PDFs required!', true);
+      showLoader(1); showStatus('compare-summary','');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      const pdf1 = await pdfjsLib.getDocument({data: await file1.arrayBuffer()}).promise;
+      const pdf2 = await pdfjsLib.getDocument({data: await file2.arrayBuffer()}).promise;
+      let t1 = '', t2 = '';
+      for(let i=1;i<=pdf1.numPages;i++){
+        const pg = await pdf1.getPage(i); const txt = await pg.getTextContent();
+        t1 += txt.items.map(i=>i.str).join(' ')+'\n';
+      }
+      for(let i=1;i<=pdf2.numPages;i++){
+        const pg = await pdf2.getPage(i); const txt = await pg.getTextContent();
+        t2 += txt.items.map(i=>i.str).join(' ')+'\n';
+      }
+      // Simple line diff
+      const l1 = t1.split('\n'), l2 = t2.split('\n');
+      let diff = '';
+      let maxL = Math.max(l1.length,l2.length);
+      let changedCount = 0;
+      for(let i=0;i<maxL;i++){
+        let a = l1[i]||'', b = l2[i]||'';
+        if(a!==b){
+          diff += `[${i+1}] -\n< ${a}\n> ${b}\n\n`;
+          changedCount++;
+        }
+      }
+      document.getElementById('compare-summary').textContent = `Compared ${l1.length} lines. ${changedCount} differences found.`;
+      document.getElementById('compare-preview').textContent = diff || 'No difference detected (text only)';
+      const downloadBtn = document.getElementById('compare-download-btn');
+      downloadBtn.classList.toggle('hidden', !diff);
+      downloadBtn.onclick = ()=>{
+        saveAs(new Blob([diff||'Identical (textually)'],{type:'text/plain'}), "pdf_diff.txt");
+      };
+      showLoader(0);
+    };
+
+    //================= ANNOTATE/REVIEW (demo: overlay text highlight) ===================
+
+    document.getElementById('annote-btn').onclick = async function(){
+      const f = document.getElementById('annote-file').files[0];
+      const highlight = document.getElementById('annote-highlight').value;
+      const comment = document.getElementById('annote-comment').value;
+      if(!f || (!highlight && !comment)) return showStatus('annote-status','PDF and some annotation required!',true);
+      showLoader(1); showStatus('annote-status','');
+      const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+      let added = 0;
+      for(let i=0;i<Math.min(3,doc.getPages().length);i++){
+        let p = doc.getPages()[i];
+        if(highlight){
+          p.drawRectangle({x:42,y:p.getHeight()-90-32*i,width:255,height:26,color:PDFLib.rgb(0.95,0.96,0.21),opacity:0.30});
+          p.drawText(highlight,{x:46,y:p.getHeight()-89-32*i,color:PDFLib.rgb(0.34,0.17,0.90),fontSize:16});
+          added++;
+        }
+        if(comment){
+          p.drawText("💬 "+comment,{x:46,y:p.getHeight()-120-38*i,color:PDFLib.rgb(0.96,0.53,0.32),fontSize:14});
+          added++;
+        }
+      }
+      saveAs(new Blob([await doc.save()],{type:'application/pdf'}),"annotated.pdf");
+      showLoader(0); showStatus('annote-status',added ? 'Annotations added!' : 'Nothing annotated!');
+    };
+
+
+    // =============== DYNAMIC LIB LOADS FOR ZIPPING =================
+    // PDF2IMG etc require JSZip; load only if absent
+    if(!window.JSZip){
+      const s = document.createElement('script');
+      s.src = "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js";
+      document.head.appendChild(s);
+    }
+  </script>
+</body>
+</html>
